@@ -15,7 +15,6 @@ public class PlayerJump : MonoBehaviour
 
 
     private bool onGround = true;
-    private bool isJumping = false;
     private void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
@@ -26,38 +25,55 @@ public class PlayerJump : MonoBehaviour
         // jumping range ( > 0)
         // mid air range (-0.5 - 0.5)
         // falling range ( < 0)
-        if (isJumping && (rigidBody.linearVelocityY > 0f))
+        if (onGround)
         {
-            Debug.Log("Jump");
-            animator.SetBool("onGround", false);
-            animator.SetBool("isJumping", true);
-        }
-        else if (isJumping && (rigidBody.linearVelocityY > -0.5f) && (rigidBody.linearVelocityY < 0.5f))
-        {
-            Debug.Log("Mid Air");
+            //Debug.Log("Ground being touched");
             animator.SetBool("isJumping", false);
-            animator.SetBool("isMidAir", true);
+            animator.SetBool("isMidAir", false);
+            animator.SetBool("isFalling", false);
+            animator.SetBool("onGround", true);
+            return;
         }
-        else if (isJumping &&  rigidBody.linearVelocityY < 0f)
+
+        animator.SetBool("onGround", false);
+
+        if (rigidBody.linearVelocityY > 0.5f)
         {
-            Debug.Log("Falling");
+            //Debug.Log("Jump");
+            animator.SetBool("isJumping", true);
+            animator.SetBool("isMidAir", false);
+            animator.SetBool("isFalling", false);
+        }
+        else if (rigidBody.linearVelocityY < -0.1f)
+        {
+            //Debug.Log("Falling");
+            animator.SetBool("isJumping", false);
             animator.SetBool("isMidAir", false);
             animator.SetBool("isFalling", true);
+        }
+        else
+        {
+            //Debug.Log("Mid-Air");
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isMidAir", true);
+            animator.SetBool("isFalling", false);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground"))
-        {
-            Debug.Log("Ground being touched");
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isMidAir", false);
-            animator.SetBool("isFalling", false);
-            animator.SetBool("onGround", true);
-            isJumping = false;
+        { 
+            onGround = true;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ground"))
+            onGround = false;
+    }
+
     private void OnJump(InputValue value)
     {
         //Debug.Log("am i mutted chat");
@@ -65,10 +81,10 @@ public class PlayerJump : MonoBehaviour
         // different amounts of time W is held = different force exerted on character
         if (value.isPressed)
         {
-            if (onGround && !isJumping)
+            if (onGround)
             {
                 rigidBody.AddForce(Vector2.up * jumpForce);
-                isJumping = true;
+                onGround = false;
             }
         }
     }

@@ -2,7 +2,32 @@ fileFormatVersion: 2
 guid: dda2684db15da5746bb1d73768edf614
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Down Fall
+    second: {fileID: 7400000, guid: 5fc6df10dc469164fa47fa90be95fded, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Idle
+    second: {fileID: 7400000, guid: b91e7d7fa9bd0ed4d94aed1ca0a59b8d, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Jump
+    second: {fileID: 7400000, guid: 51001ab48d02cb346a5ef759ee73a841, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Mid Air
+    second: {fileID: 7400000, guid: 42979c06d6126c147911587904fc0ac1, type: 2}
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Running
+    second: {fileID: 7400000, guid: 18c881ea671acc5459a489d785ca0b46, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -33,7 +58,7 @@ ScriptedImporter:
     sRGBTexture: 1
     spriteMode: 2
     spriteExtrude: 1
-    spriteMeshType: 1
+    spriteMeshType: 0
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
     spritePixelsToUnits: 100
@@ -98,7 +123,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639258925502429661
+  platformSettingsDirtyTick: 639261111113981032
   textureAssetName: 
   singleSpriteImportData:
   - name: 
