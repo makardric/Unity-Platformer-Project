@@ -9,17 +9,18 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator animator;
     private bool facingRight = true;
-
+    private Rigidbody2D rigidBody;
     Vector2 playerMovementVec;
 
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        rigidBody = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        gameObject.transform.Translate(playerMovementVec * playerSpeed * Time.deltaTime);
+        rigidBody.linearVelocityX = playerMovementVec.x * playerSpeed;
     }
 
     private void OnMove(InputValue value)

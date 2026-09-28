@@ -20,7 +20,7 @@ public class PlayerJump : MonoBehaviour
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         animator = gameObject.GetComponent<Animator>();
     }
-    private void Update()
+    private void FixedUpdate()
     {
         // jumping range ( > 0)
         // mid air range (-0.5 - 0.5)
@@ -79,13 +79,10 @@ public class PlayerJump : MonoBehaviour
         //Debug.Log("am i mutted chat");
         // if on ground
         // different amounts of time W is held = different force exerted on character
-        if (value.isPressed)
+        if (value.isPressed && onGround)
         {
-            if (onGround)
-            {
-                rigidBody.AddForce(Vector2.up * jumpForce);
-                onGround = false;
-            }
+            rigidBody.AddForce(Vector2.up * jumpForce);
+            onGround = false;
         }
     }
 }
