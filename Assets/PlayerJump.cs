@@ -9,11 +9,12 @@ public class PlayerJump : MonoBehaviour
     
     [SerializeField] private float jumpForce = 100f;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Collider2D groundTriggerCollider;
+    [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rigidBody;
     private Animator animator;
-    //[SerializeField] private float tapJumpForce = 3f;
-    //[SerializeField] private float holdJumpForce = 10f;
+
 
     //0 = Idle
     //1 = Run
@@ -33,6 +34,8 @@ public class PlayerJump : MonoBehaviour
         // jumping range ( > 0)
         // mid air range (-0.5 - 0.5)
         // falling range ( < 0)
+        onGround = groundTriggerCollider.IsTouchingLayers(groundLayer);
+
         int state;
 
         if (onGround)
@@ -64,22 +67,8 @@ public class PlayerJump : MonoBehaviour
             state = 3;
         }
 
-    Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
+    //Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
     animator.SetInteger("AnimationState", state);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Ground"))
-        { 
-            onGround = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Ground"))
-            onGround = false;
     }
 
     private void OnJump(InputValue value)

@@ -33,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
         //3 = MidAir
         //4 = Fall
         //Debug.Log("OnMove is being triggered");
-        //Debug.Log(animator == null);
-        //Debug.Log("Setting isRunning to " + (playerMovementVec.sqrMagnitude > 0.01f));
         playerMovementVec = value.Get<Vector2>();
 
         // if the movement vector is -1 on the x (moving left)
