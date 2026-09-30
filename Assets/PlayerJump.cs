@@ -8,10 +8,18 @@ public class PlayerJump : MonoBehaviour
 {
     
     [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private PlayerMovement playerMovement;
+
     private Rigidbody2D rigidBody;
     private Animator animator;
     //[SerializeField] private float tapJumpForce = 3f;
     //[SerializeField] private float holdJumpForce = 10f;
+
+    //0 = Idle
+    //1 = Run
+    //2 = Jump
+    //3 = MidAir
+    //4 = Fall
 
 
     private bool onGround = true;
@@ -25,39 +33,39 @@ public class PlayerJump : MonoBehaviour
         // jumping range ( > 0)
         // mid air range (-0.5 - 0.5)
         // falling range ( < 0)
+        int state;
+
         if (onGround)
         {
             //Debug.Log("Ground being touched");
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isMidAir", false);
-            animator.SetBool("isFalling", false);
-            animator.SetBool("onGround", true);
-            return;
+            if (playerMovement.IsMoving)
+                // run
+                state = 1; 
+            else
+            {
+                // idle
+                state = 0;
+            }
         }
 
-        animator.SetBool("onGround", false);
-
-        if (rigidBody.linearVelocityY > 0.5f)
+        else if (rigidBody.linearVelocityY > 0.5f)
         {
             //Debug.Log("Jump");
-            animator.SetBool("isJumping", true);
-            animator.SetBool("isMidAir", false);
-            animator.SetBool("isFalling", false);
+            state = 2;
         }
         else if (rigidBody.linearVelocityY < -0.1f)
         {
             //Debug.Log("Falling");
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isMidAir", false);
-            animator.SetBool("isFalling", true);
+            state = 4;
         }
         else
         {
             //Debug.Log("Mid-Air");
-            animator.SetBool("isJumping", false);
-            animator.SetBool("isMidAir", true);
-            animator.SetBool("isFalling", false);
+            state = 3;
         }
+
+    Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
+    animator.SetInteger("AnimationState", state);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

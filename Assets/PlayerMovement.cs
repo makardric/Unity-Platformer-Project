@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody;
     Vector2 playerMovementVec;
 
+    public bool IsMoving => playerMovementVec.x != 0;
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -25,30 +26,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
+
+        //0 = Idle
+        //1 = Run
+        //2 = Jump
+        //3 = MidAir
+        //4 = Fall
         //Debug.Log("OnMove is being triggered");
         //Debug.Log(animator == null);
         //Debug.Log("Setting isRunning to " + (playerMovementVec.sqrMagnitude > 0.01f));
         playerMovementVec = value.Get<Vector2>();
-        if(playerMovementVec.x != 0)
-        {
-            animator.SetBool("isRunning", true);
-        }
-        else
-        {
-            animator.SetBool("isRunning", false);
-        }
 
         // if the movement vector is -1 on the x (moving left)
         if (playerMovementVec.x == -1)
         {
             facingRight = false;
-            GetComponent<SpriteRenderer>().flipX = true;
+            transform.localScale = new Vector3(-1f, 1f, 1f);
         }
         // if the movement vector is 1 on the x (moving right)
         else if (playerMovementVec.x == 1 && facingRight == false)
         {
             facingRight = true;
-            GetComponent<SpriteRenderer>().flipX = false;
+            transform.localScale = new Vector3(1f, 1f, 1f);
 
         }
     }
