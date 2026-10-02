@@ -15,7 +15,8 @@ public class PlayerJump : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Animator animator;
 
-
+    private bool onGround = true;
+    private bool jumped = false;
     //0 = Idle
     //1 = Run
     //2 = Jump
@@ -23,7 +24,7 @@ public class PlayerJump : MonoBehaviour
     //4 = Fall
 
 
-    private bool onGround = true;
+    
     private void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
@@ -76,10 +77,19 @@ public class PlayerJump : MonoBehaviour
         //Debug.Log("am i mutted chat");
         // if on ground
         // different amounts of time W is held = different force exerted on character
-        if (value.isPressed && onGround)
+        if (value.isPressed)
         {
-            rigidBody.AddForce(Vector2.up * jumpForce);
-            onGround = false;
+            if (onGround) {
+                rigidBody.AddForce(Vector2.up * jumpForce);
+                onGround = false;
+                jumped = true;
+            }
+            else if (jumped) {
+                rigidBody.linearVelocity = new Vector3(rigidBody.linearVelocity.x, 0);
+                rigidBody.AddForce(Vector2.up * jumpForce);
+                jumped = false;
+            }
+                
         }
     }
 }
