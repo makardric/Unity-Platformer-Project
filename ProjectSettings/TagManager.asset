@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Ground
   - Wall
+  - Death
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Death
   - Water
   - UI
   - Ground

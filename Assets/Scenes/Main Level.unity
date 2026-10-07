@@ -1188,6 +1188,98 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
+--- !u!1 &465630276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 465630278}
+  - component: {fileID: 465630277}
+  m_Layer: 3
+  m_Name: Death Boundaries
+  m_TagString: Death
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!60 &465630277
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465630276}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 3.2287073, y: 1.8799682}
+      - {x: -0.595187, y: 1.8683727}
+      - {x: -0.6071963, y: -0.83489835}
+      - {x: 20.235245, y: -0.83076024}
+      - {x: 20.23738, y: -0.3317628}
+      - {x: 16.210325, y: -0.32658672}
+      - {x: 16.212185, y: -0.5565672}
+      - {x: 15.736195, y: -0.55306005}
+      - {x: 15.7319565, y: -0.32427406}
+      - {x: 11.408358, y: -0.27666998}
+      - {x: 9.33485, y: 0.5915737}
+      - {x: 8.528559, y: 0.6081443}
+      - {x: 6.9841337, y: 1.8931212}
+  m_UseDelaunayMesh: 0
+--- !u!4 &465630278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465630276}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.909, y: -6.208, z: -1.2497594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &469060781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,7 +1729,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.46290702, y: -3.14711, z: -10}
+  m_LocalPosition: {x: -0.99, y: -3.146, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66886,7 +66978,7 @@ CompositeCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -70719,7 +70811,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9856b21efa802824e90172a750787120, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -70754,7 +70846,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 0.3136345, y: 0.4060099}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.02
 --- !u!50 &1240975181
 Rigidbody2D:
   serializedVersion: 5
@@ -70796,11 +70888,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 2
   jumpForce: 200
-  dashForce: 200
   groundTriggerCollider: {fileID: 1240975187}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  deathLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  campfire: {fileID: 469060781}
   jumpAudio: {fileID: 1240975190}
   runningAudio: {fileID: 1240975193}
   doubleJumpDelay: 0.1
@@ -70834,28 +70929,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1240975186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1240975174}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9c43e1417e5e2d49bfc032c60f9b4b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpForce: 200
-  dashForce: 100
-  playerMovement: {fileID: 1240975182}
-  groundTriggerCollider: {fileID: 1240975187}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  jumpAudio: {fileID: 1240975190}
-  runningAudio: {fileID: 1240975193}
-  doubleJumpDelay: 0.1
 --- !u!61 &1240975187
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71363,9 +71436,6 @@ PrefabInstance:
       addedObject: {fileID: 1240975182}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: dda2684db15da5746bb1d73768edf614, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1240975186}
-    - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: dda2684db15da5746bb1d73768edf614, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1240975183}
     - targetCorrespondingSourceObject: {fileID: -2253911629886400664, guid: dda2684db15da5746bb1d73768edf614, type: 3}
       insertIndex: -1
@@ -71451,3 +71521,4 @@ SceneRoots:
   - {fileID: 484837026}
   - {fileID: 6914104580211524609}
   - {fileID: 1272151670}
+  - {fileID: 465630278}

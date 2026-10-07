@@ -5,13 +5,16 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 1f;
     [SerializeField] private float jumpForce = 100f;
-    [SerializeField] private float dashForce = 100f;
     [SerializeField] private Collider2D groundTriggerCollider;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask deathLayer;
+    [SerializeField] private GameObject campfire;
     [SerializeField] private AudioSource jumpAudio;
     [SerializeField] private AudioSource runningAudio;
     // small buffer so you can't instant double jump
     [SerializeField] private float doubleJumpDelay = 0.5f;
+
+    private bool fell = false;
 
     private Animator animator;
     private Rigidbody2D rigidBody;
@@ -19,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     private bool facingRight = true;
     private Vector2 playerMovementVec;
 
-    private bool dashAvailable = true;
     private float firstJumpTime;
 
     private bool onGround = true;
@@ -46,12 +48,18 @@ public class PlayerMovement : MonoBehaviour
         // mid air range (-0.5 - 0.5)
         // falling range ( < 0)
         onGround = groundTriggerCollider.IsTouchingLayers(groundLayer);
+        fell = groundTriggerCollider.IsTouchingLayers(deathLayer);
 
+
+        if (fell)
+        {
+            gameObject.transform.position = campfire.transform.position;
+            fell = false;
+        }
         int state;
 
         if (onGround)
         {
-            dashAvailable = true;
             //Debug.Log("Ground being touched");
             if (IsMoving)
             {
@@ -72,11 +80,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (runningAudio.isPlaying)
                 runningAudio.Stop();
-
-            if (rigidBody.linearVelocityX > 0.5f)
-            {
-                state = 5;
-            }
 
             if (rigidBody.linearVelocityY > 0.5f)
             {
@@ -146,11 +149,5 @@ public class PlayerMovement : MonoBehaviour
                 jumpAudio.Play();
             }
         }
-    }
-
-    private void OnDash(InputValue value)
-    {
-        dashAvailable = false;
-        rigidBody.AddForce(Vector2.right * dashForce);
     }
 }
