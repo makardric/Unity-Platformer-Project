@@ -11,6 +11,10 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Collider2D groundTriggerCollider;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private AudioSource jumpAudio;
+    // small buffer so you can't instant double jump
+    [SerializeField] private float doubleJumpDelay = 0.5f;
+    private float firstJumpTime;
 
     private Rigidbody2D rigidBody;
     private Animator animator;
@@ -83,11 +87,14 @@ public class PlayerJump : MonoBehaviour
                 rigidBody.AddForce(Vector2.up * jumpForce);
                 onGround = false;
                 jumped = true;
+                firstJumpTime = Time.time;
+                jumpAudio.Play();
             }
-            else if (jumped) {
-                rigidBody.linearVelocity = new Vector3(rigidBody.linearVelocity.x, 0);
+            else if (jumped && Time.time >= firstJumpTime + doubleJumpDelay) {
+                rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
                 rigidBody.AddForce(Vector2.up * jumpForce);
                 jumped = false;
+                jumpAudio.Play();
             }
                 
         }
