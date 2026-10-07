@@ -8,12 +8,16 @@ public class PlayerJump : MonoBehaviour
 {
     
     [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private float dashForce = 100f;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Collider2D groundTriggerCollider;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private AudioSource jumpAudio;
+    [SerializeField] private AudioSource runningAudio;
     // small buffer so you can't instant double jump
     [SerializeField] private float doubleJumpDelay = 0.5f;
+    
+    private bool dashAvailable = true;
     private float firstJumpTime;
 
     private Rigidbody2D rigidBody;
@@ -45,35 +49,52 @@ public class PlayerJump : MonoBehaviour
 
         if (onGround)
         {
+            dashAvailable = true;
             //Debug.Log("Ground being touched");
             if (playerMovement.IsMoving)
+            {
                 // run
-                state = 1; 
+                state = 1;
+                if (!runningAudio.isPlaying)
+                    runningAudio.Play();
+            }
             else
             {
                 // idle
                 state = 0;
+                if (runningAudio.isPlaying)
+                    runningAudio.Stop();
             }
-        }
-
-        else if (rigidBody.linearVelocityY > 0.5f)
-        {
-            //Debug.Log("Jump");
-            state = 2;
-        }
-        else if (rigidBody.linearVelocityY < -0.1f)
-        {
-            //Debug.Log("Falling");
-            state = 4;
         }
         else
         {
-            //Debug.Log("Mid-Air");
-            state = 3;
+            if (runningAudio.isPlaying)
+                runningAudio.Stop();
+
+            if (rigidBody.linearVelocityX > 0.5f)
+            {
+                state = 5;
+            }
+
+            if (rigidBody.linearVelocityY > 0.5f)
+            {
+                //Debug.Log("Jump");
+                state = 2;
+            }
+            else if (rigidBody.linearVelocityY < -0.1f)
+            {
+                //Debug.Log("Falling");
+                state = 4;
+            }
+            else
+            {
+                //Debug.Log("Mid-Air");
+                state = 3;
+            }
         }
 
-    //Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
-    animator.SetInteger("AnimationState", state);
+        //Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
+        animator.SetInteger("AnimationState", state);
     }
 
     private void OnJump(InputValue value)
@@ -98,5 +119,10 @@ public class PlayerJump : MonoBehaviour
             }
                 
         }
+    }
+    private void OnDash(InputValue value)
+    {
+        dashAvailable = false;
+        rigidBody.AddForce(Vector2.right * dashForce);
     }
 }

@@ -1,32 +1,106 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 1f;
+    [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private float dashForce = 100f;
+    [SerializeField] private Collider2D groundTriggerCollider;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private AudioSource jumpAudio;
+    [SerializeField] private AudioSource runningAudio;
+    // small buffer so you can't instant double jump
+    [SerializeField] private float doubleJumpDelay = 0.5f;
 
     private Animator animator;
-    private bool facingRight = true;
     private Rigidbody2D rigidBody;
-    Vector2 playerMovementVec;
+
+    private bool facingRight = true;
+    private Vector2 playerMovementVec;
+
+    private bool dashAvailable = true;
+    private float firstJumpTime;
+
+    private bool onGround = true;
+    private bool jumped = false;
+    //0 = Idle
+    //1 = Run
+    //2 = Jump
+    //3 = MidAir
+    //4 = Fall
 
     public bool IsMoving => playerMovementVec.x != 0;
+
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         rigidBody.linearVelocityX = playerMovementVec.x * playerSpeed;
+
+        // jumping range ( > 0)
+        // mid air range (-0.5 - 0.5)
+        // falling range ( < 0)
+        onGround = groundTriggerCollider.IsTouchingLayers(groundLayer);
+
+        int state;
+
+        if (onGround)
+        {
+            dashAvailable = true;
+            //Debug.Log("Ground being touched");
+            if (IsMoving)
+            {
+                // run
+                state = 1;
+                if (!runningAudio.isPlaying)
+                    runningAudio.Play();
+            }
+            else
+            {
+                // idle
+                state = 0;
+                if (runningAudio.isPlaying)
+                    runningAudio.Stop();
+            }
+        }
+        else
+        {
+            if (runningAudio.isPlaying)
+                runningAudio.Stop();
+
+            if (rigidBody.linearVelocityX > 0.5f)
+            {
+                state = 5;
+            }
+
+            if (rigidBody.linearVelocityY > 0.5f)
+            {
+                //Debug.Log("Jump");
+                state = 2;
+            }
+            else if (rigidBody.linearVelocityY < -0.1f)
+            {
+                //Debug.Log("Falling");
+                state = 4;
+            }
+            else
+            {
+                //Debug.Log("Mid-Air");
+                state = 3;
+            }
+        }
+
+        //Debug.Log($"onGround={onGround}, velY={rigidBody.linearVelocityY}, state={state}");
+        animator.SetInteger("AnimationState", state);
     }
 
     private void OnMove(InputValue value)
     {
-
         //0 = Idle
         //1 = Run
         //2 = Jump
@@ -46,7 +120,37 @@ public class PlayerMovement : MonoBehaviour
         {
             facingRight = true;
             transform.localScale = new Vector3(1f, 1f, 1f);
-
         }
+    }
+
+    private void OnJump(InputValue value)
+    {
+        //Debug.Log("am i mutted chat");
+        // if on ground
+        // different amounts of time W is held = different force exerted on character
+        if (value.isPressed)
+        {
+            if (onGround)
+            {
+                rigidBody.AddForce(Vector2.up * jumpForce);
+                onGround = false;
+                jumped = true;
+                firstJumpTime = Time.time;
+                jumpAudio.Play();
+            }
+            else if (jumped && Time.time >= firstJumpTime + doubleJumpDelay)
+            {
+                rigidBody.linearVelocity = new Vector2(rigidBody.linearVelocity.x, 0);
+                rigidBody.AddForce(Vector2.up * jumpForce);
+                jumped = false;
+                jumpAudio.Play();
+            }
+        }
+    }
+
+    private void OnDash(InputValue value)
+    {
+        dashAvailable = false;
+        rigidBody.AddForce(Vector2.right * dashForce);
     }
 }
