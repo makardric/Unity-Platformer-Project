@@ -5,6 +5,8 @@ using UnityEngine.Rendering.Universal;
 public class Campfire : MonoBehaviour
 {
     private Animator animator;
+    [SerializeField] private bool isEndCampfire = false;
+    [SerializeField] private PersonalBest personalBest;
     [SerializeField] private GameObject lightObject;
     [SerializeField] private AudioSource campfireAudio;
     private bool isOn = false;
@@ -26,6 +28,11 @@ public class Campfire : MonoBehaviour
                 animator.SetBool("isLit", true);
                 Invoke("setOn", 0.5f);
                 isOn = true;
+                if (isEndCampfire)
+                {
+                    personalBest.AddPersonalBestTime();
+                    personalBest.StopTimer();
+                }
             }
         }
     }

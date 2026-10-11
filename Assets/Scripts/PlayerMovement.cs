@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioSource runningAudio;
     // small buffer so you can't instant double jump
     [SerializeField] private float doubleJumpDelay = 0.5f;
+    [SerializeField] private JumpEffectPool jumpEffectPool;
 
     private bool fell = false;
 
@@ -147,6 +148,8 @@ public class PlayerMovement : MonoBehaviour
                 rigidBody.AddForce(Vector2.up * jumpForce);
                 jumped = false;
                 jumpAudio.Play();
+                Vector3 feet = new Vector3(transform.position.x, groundTriggerCollider.bounds.min.y, 0f);
+                jumpEffectPool.PlayAt(feet);
             }
         }
     }

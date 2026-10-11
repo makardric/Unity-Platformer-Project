@@ -125,7 +125,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: menu_title
     originalName: 
-    pivot: {x: 0.5217391, y: -1.3870968}
+    pivot: {x: 0.56140345, y: -1.2560976}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -133,8 +133,8 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 184
-      height: 155
+      width: 171
+      height: 164
     spriteID: 76d4980b50a37754c987acd22bcb75c0
     spriteBone: []
     spriteOutline: []
@@ -163,9 +163,9 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 88
-        y: 215
-        width: 184
-        height: 155
+        y: 206
+        width: 171
+        height: 164
       spriteId: 76d4980b50a37754c987acd22bcb75c0
     linkedCells: []
     parentIndex: -1
